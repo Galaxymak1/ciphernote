@@ -12,3 +12,20 @@ export async function encryptBytes(masterKey:CryptoKey,plaintextBytes :Uint8Arra
         ciphertext: cipher
     };
 }
+
+export async function wrapMasterKey(
+    kek: CryptoKey,
+    masterKey: CryptoKey
+): Promise<{ wrappedKey: ArrayBuffer; iv: Uint8Array }> {
+    const iv = crypto.getRandomValues(new Uint8Array(12))
+
+    const raw = await crypto.subtle.exportKey("raw", masterKey)
+
+    const wrappedKey = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv },
+        kek,
+        raw
+    )
+
+    return { wrappedKey, iv }
+}

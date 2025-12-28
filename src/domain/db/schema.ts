@@ -1,5 +1,7 @@
 export const DB_NAME = "secure-notes"
 export const DB_VERSION = 1
+export const VAULT_KEY = "primary"
+
 
 export const STORES = {
     VAULT: "vault",

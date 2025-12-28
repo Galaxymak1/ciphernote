@@ -1,5 +1,5 @@
 // domain/db/client.ts
-import { DB_NAME, DB_VERSION, STORES } from "./schema"
+import {DB_NAME, DB_VERSION, STORES, VAULT_KEY} from "./schema"
 import type { VaultRecord, EntryRecord, SyncRecord } from "./types"
 import {type DBSchema, openDB} from "idb";
 
@@ -25,7 +25,9 @@ export const db = await openDB<SecureNotesDB>(
     {
         upgrade(db) {
             if (!db.objectStoreNames.contains(STORES.VAULT)) {
-                db.createObjectStore(STORES.VAULT)
+                db.createObjectStore(STORES.VAULT, {
+                    keyPath: VAULT_KEY
+                })
             }
 
             if (!db.objectStoreNames.contains(STORES.ENTRIES)) {

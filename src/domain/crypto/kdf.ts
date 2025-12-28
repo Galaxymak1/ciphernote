@@ -8,8 +8,12 @@ export async function generateMasterKey(): Promise<CryptoKey> {
 // domain/crypto/deriveKEK.ts
 export async function deriveKEK(
     passphrase: string,
-    salt: ArrayBuffer
+    salt: Uint8Array,
+    iterations:number
 ): Promise<CryptoKey> {
+    if (passphrase.length < 1) {
+        throw new Error("Passphrase missing")
+    }
     const baseKey = await crypto.subtle.importKey(
         "raw",
         new TextEncoder().encode(passphrase),
@@ -21,8 +25,8 @@ export async function deriveKEK(
     return crypto.subtle.deriveKey(
         {
             name: "PBKDF2",
-            salt : salt,
-            iterations: 310_000,
+            salt : salt as unknown as ArrayBuffer,
+            iterations: iterations,
             hash: "SHA-256"
         },
         baseKey,
