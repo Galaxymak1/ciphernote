@@ -3,12 +3,11 @@ import {deriveKEK, generateMasterKey} from "../crypto/kdf.ts";
 import {generateSalt} from "../crypto/random.ts";
 import {wrapMasterKey} from "../crypto/encrypt.ts";
 import {unwrapMasterKey} from "../crypto/decrypt.ts";
+import { useVaultStore} from "../../store/vaultStore.ts";
 
 const KDF_ITERATIONS = 310_000
 
 export class Vault {
-    private masterKey?: CryptoKey
-
     async init(passphrase: string) {
         if (await getVault()) {
             throw new Error("Vault already initialized")
@@ -41,24 +40,27 @@ export class Vault {
                 vault.iterations
             )
 
-            this.masterKey = await unwrapMasterKey(
+            const masterKey = await unwrapMasterKey(
                 kek,
                 vault.wrappedKey,
                 vault.iv
             )
+            useVaultStore.getState().setMasterKey(masterKey)
+
         } catch {
             throw new Error("Invalid passphrase")
         }
     }
 
     getMasterKey(): CryptoKey {
-        if (!this.masterKey) {
+        const masterKey = useVaultStore.getState().masterKey
+        if (!masterKey) {
             throw new Error("Vault is locked")
         }
-        return this.masterKey
+        return masterKey
     }
 
     lock() {
-        this.masterKey = undefined
+        useVaultStore.getState().clearMasterKey()
     }
 }

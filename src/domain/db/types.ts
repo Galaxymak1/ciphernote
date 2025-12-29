@@ -11,6 +11,7 @@ export type EntryRecord = {
     iv: Uint8Array
     updatedAt: number
     type: string
+    name: string
 }
 
 export type SyncRecord = {

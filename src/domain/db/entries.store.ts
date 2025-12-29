@@ -10,6 +10,14 @@ export async function getEntry(id: string) {
     return db.get(STORES.ENTRIES, id)
 }
 
-export async function listEntries() {
+export async function updateEntry(entry:EntryRecord,id:string) {
+    await db.put(STORES.ENTRIES,entry,id)
+}
+
+export async function deleteEntry(id: string) {
+    await db.delete(STORES.ENTRIES, id)
+}
+
+export async function getAllEntries() {
     return db.getAll(STORES.ENTRIES)
 }

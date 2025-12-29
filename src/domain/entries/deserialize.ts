@@ -4,3 +4,7 @@ export function deserializeJson(entry: ArrayBuffer){
     );
     return note;
 }
+
+export function deserializeString(bytes: ArrayBuffer): string {
+    return new TextDecoder().decode(bytes)
+}
