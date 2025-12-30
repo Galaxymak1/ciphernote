@@ -4,11 +4,13 @@ import { Vault } from "../domain/vault/vault"
 import { useVaultStore } from "../store/vaultStore"
 import { AppButton } from "../components/atoms/AppButton"
 import { ClipboardDocumentIcon, CheckIcon } from "@heroicons/react/16/solid"
+import {useNavigate} from "react-router";
 
 export const VaultSetup = () => {
     const [passphrase, setPassphrase] = useState("")
     const [confirmed, setConfirmed] = useState(false)
     const [copied, setCopied] = useState(false)
+    const navigate = useNavigate()
 
     const setStatus = useVaultStore((s) => s.setStatus)
 
@@ -19,6 +21,7 @@ export const VaultSetup = () => {
         await vault.init(passphrase)
 
         setStatus("locked")
+        navigate("/unlock", {replace: true})
     }
 
     async function handleCopy() {

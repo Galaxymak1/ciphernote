@@ -24,7 +24,7 @@ export const AppButton = ({
 
     return (
         <button
-            className={`btn  rounded-lg py-2 px-5  max-w-40 cursor-pointer ${classes}`}
+            className={`btn  rounded-lg py-2 px-5  w-full max-w-40 cursor-pointer ${classes}`}
             disabled={disabled}
             {...props}
         >

@@ -1,29 +1,34 @@
-import {getAllEntries, getEntry as getEntryRecord, saveEntry, deleteEntry as deleteEntryRecord} from "../db/entries.store.ts";
+import {
+    getAllEntries,
+    getEntry as getEntryRecord,
+    saveEntry,
+    deleteEntry as deleteEntryRecord,
+    getEntry
+} from "../db/entries.store.ts";
 import {encryptBytes} from "../crypto/encrypt.ts";
 
 import {decryptBytes} from "../crypto/decrypt.ts";
-import {Vault} from "../vault/vault.ts";
 import type {EntryMeta, PlainEntry} from "../../types/types.ts";
 import type {EntryRecord} from "../db/types.ts";
 import {serializeString} from "./serialize.ts";
 import {deserializeString} from "./deserialize.ts";
 
 export class EntriesService {
-    private vault: Vault
-
-    constructor(vault: Vault) {
-        this.vault = vault
+    private readonly masterKey: CryptoKey | null = null;
+    constructor(masterKey: CryptoKey | null = null) {
+        this.masterKey = masterKey;
     }
 
     async createEntry(data: PlainEntry): Promise<string> {
         if (!data.name || !data.type) {
             throw new Error("Missing name or type")
         }
-
-        const key = this.vault.getMasterKey()
+        if (!this.masterKey){
+            throw new Error("Missing key")
+        }
 
         const encrypted = await encryptBytes(
-            key,
+            this.masterKey,
             serializeString(data.value)
         )
 
@@ -46,11 +51,11 @@ export class EntriesService {
         if (!record) {
             throw new Error("Entry not found")
         }
-
-        const key = this.vault.getMasterKey()
-
+        if (!this.masterKey){
+            throw new Error("Missing key")
+        }
         const encrypted = await encryptBytes(
-            key,
+            this.masterKey,
             serializeString(data.value)
         )
 
@@ -64,6 +69,14 @@ export class EntriesService {
         }
 
         await saveEntry(updated)
+    }
+
+    async getEntry(id: string): Promise<EntryRecord> {
+        const record = await getEntry(id)
+        if (!record) {
+            throw new Error("Entry not found")
+        }
+        return record
     }
 
 
@@ -87,10 +100,11 @@ export class EntriesService {
             throw new Error("Entry not found")
         }
 
-        const key = this.vault.getMasterKey()
-
+        if (!this.masterKey){
+            throw new Error("Missing key")
+        }
         const plaintext = await decryptBytes(
-            key,
+            this.masterKey,
             record.ciphertext,
             record.iv
         )

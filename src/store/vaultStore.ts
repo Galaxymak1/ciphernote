@@ -1,21 +1,37 @@
-import {create} from "zustand/react";
-import type {VaultStatus} from "../types/types.ts";
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+import type { VaultStatus } from "../types/types"
 
 interface VaultState {
-    status: VaultStatus;
-    setStatus: (status: VaultStatus) => void;
-    masterKey: CryptoKey | null;
-    setMasterKey: (masterKey: CryptoKey) => void;
-    clearMasterKey: () => void;
+    status: VaultStatus
+    setStatus: (s: VaultStatus) => void
+
+    masterKey: CryptoKey | null
+    setMasterKey: (k: CryptoKey) => void
+    clearMasterKey: () => void
 }
 
-export const useVaultStore = create<VaultState>((set) => ({
-    masterKey: null,
+export const useVaultStore = create<VaultState>()(
+    persist(
+        (set) => ({
+            status: "loading",
+            masterKey: null,
 
-    setMasterKey: (key) => set({ masterKey: key }),
+            setStatus: (status) => set({ status }),
 
-    clearMasterKey: () => set({ masterKey: null }),
+            setMasterKey: (key) =>
+                set({ masterKey: key, status: "unlocked" }),
 
-    status : "loading",
-    setStatus : (status: VaultStatus) => set({ status }),
-}))
+            clearMasterKey: () =>
+                set({ masterKey: null, status: "locked" }),
+        }),
+        {
+            name: "vault-ui-state",
+            partialize: (state) => ({
+                status: state.status !== "unlocked"
+                    ? state.status
+                    : "locked",
+            }),
+        }
+    )
+)
