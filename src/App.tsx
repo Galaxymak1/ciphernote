@@ -4,8 +4,7 @@ import {useEffect} from "react";
 import {Outlet} from "react-router";
 
 export const App = () => {
-    const { status,setStatus } = useVaultStore()
-    console.log(status)
+    const { setStatus } = useVaultStore()
 
     useEffect(() => {
         async function init() {

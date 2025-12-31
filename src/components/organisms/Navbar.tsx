@@ -9,14 +9,12 @@ import {useNavigate} from "react-router";
 export const Navbar = () => {
     const { status,setStatus, clearMasterKey } = useVaultStore()
     const navigate = useNavigate()
-    console.log(status)
 
     const isUnlocked = status === "unlocked"
 
     return (
         <header className="w-full bg-base-200/80 backdrop-blur-md border-b border-base-300">
             <nav className="flex items-center justify-between px-4 py-3">
-                {/* Left */}
                 <div className="flex items-center gap-2">
                     <label
                         htmlFor="vault-drawer"

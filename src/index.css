@@ -34,4 +34,7 @@
   --depth: 0;
   --noise: 0;
 }
+:root {
+  --toastify-color-dark: var(--color-base-100)
+}
 

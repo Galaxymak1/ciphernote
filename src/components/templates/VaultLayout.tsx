@@ -1,6 +1,7 @@
 import { Outlet } from "react-router"
 import { Sidebar } from "../organisms/Sidebar"
 import { Navbar } from "../organisms/Navbar"
+import {ToastContainer} from "react-toastify";
 
 export const VaultLayout = () => {
     return (
@@ -26,6 +27,10 @@ export const VaultLayout = () => {
                 />
                 <Sidebar />
             </div>
+            <ToastContainer
+                theme="dark"
+                position="top-center"
+            />
         </div>
     )
 }

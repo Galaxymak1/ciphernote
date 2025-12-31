@@ -19,7 +19,6 @@ export const Unlock = () => {
             setError(null)
 
             const vault = new Vault()
-            console.log(passphrase)
             await vault.unlock(passphrase)
 
             setStatus("unlocked")

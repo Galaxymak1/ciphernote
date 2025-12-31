@@ -5,13 +5,20 @@ import {
     PlusIcon,
     LockClosedIcon,
 } from "@heroicons/react/16/solid"
-import {NavLink} from "react-router";
+import {NavLink, useSearchParams} from "react-router";
+import {useVaultStore} from "../../store/vaultStore.ts";
 
 
 export const Sidebar = () => {
+    const { setStatus, clearMasterKey } = useVaultStore()
+    const [params] = useSearchParams();
+    const type = params.get("type");
+
+    const linkClass = (value?: string) =>
+        `flex items-center gap-2 ${
+            type === value ? "active bg-base-300" : ""
+        }`;
     return (
-
-
                 <aside className="bg-base-200 w-80 min-h-full p-4 flex flex-col">
                     <div className="mb-6">
                         <h2 className="text-xl font-bold text-primary">
@@ -22,41 +29,41 @@ export const Sidebar = () => {
                         </p>
                     </div>
 
-                    <ul className="menu flex-1 gap-1">
+                    <ul className="menu flex-1 gap-1 w-full ">
                         <li>
-                            <NavLink to="/vault">
+                            <NavLink to="/vault" className={linkClass(undefined)}>
                                 <DocumentTextIcon className="w-4" />
                                 All entries
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to="/vault/type/api">
+                            <NavLink to="/vault?type=api" className={linkClass("api")}>
                                 <KeyIcon className="w-4" />
                                 APIs
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to="/vault/type/secret">
+                            <NavLink to="/vault?type=secret" className={linkClass("secret")}>
                                 <KeyIcon className="w-4" />
                                 Secrets
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to="/vault/type/note">
+                            <NavLink to="/vault?type=note" className={linkClass("note")}>
                                 <DocumentTextIcon className="w-4" />
                                 Notes
                             </NavLink>
                         </li>
 
-                        <li>
-                            <NavLink to="/vault/expiring">
-                                <ClockIcon className="w-4" />
-                                Expiring soon
-                            </NavLink>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <NavLink to="/vault/expiring">*/}
+                        {/*        <ClockIcon className="w-4" />*/}
+                        {/*        Expiring soon*/}
+                        {/*    </NavLink>*/}
+                        {/*</li>*/}
                     </ul>
 
                     <div className="border-t border-base-300 pt-4 space-y-2">
@@ -71,7 +78,8 @@ export const Sidebar = () => {
                         <button
                             className="btn btn-outline btn-sm w-full"
                             onClick={() => {
-                                // later: lock vault + clear master key
+                                setStatus("locked")
+                                clearMasterKey()
                             }}
                         >
                             <LockClosedIcon className="w-4" />

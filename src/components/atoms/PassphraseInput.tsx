@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const PassphraseInput = ({ value, onChange }: Props) => {
-    const [shown, setShown] = useState(true)
+    const [shown, setShown] = useState(false)
 
     return (
         <div className="inline-flex items-center border border-neutral gap-2 rounded-lg p-2">

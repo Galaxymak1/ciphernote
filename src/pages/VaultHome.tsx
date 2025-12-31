@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import {useEffect, useMemo, useState} from "react"
 import {EntriesService} from "../domain/entries/entriesService.ts";
 import {EntryCard} from "../components/molecules/EntryCard.tsx";
 import type {VaultEntryMeta} from "../domain/db/types.ts";
-import {useNavigate} from "react-router";
+import {useNavigate, useSearchParams} from "react-router";
 
 
 export const VaultHome = () => {
@@ -10,7 +10,13 @@ export const VaultHome = () => {
     const [loading, setLoading] = useState(true)
     const entryService = new EntriesService()
     const navigate = useNavigate()
+    const [params] = useSearchParams();
+    const type = params.get("type");
 
+    const filteredEntries = useMemo(
+        () => type ? entries.filter(e => e.type === type) : entries,
+        [entries, type]
+    );
 
     useEffect(() => {
         async function load() {
@@ -36,14 +42,14 @@ export const VaultHome = () => {
 
     return (
         <div className="p-6 grid gap-3 max-w-3xl">
-            {entries.map((entry) => (
+            {filteredEntries.map((filteredEntry) => (
                 <EntryCard
-                    key={entry.id}
-                    name={entry.name}
-                    type={entry.type}
-                    updatedAt={entry.updatedAt}
+                    key={filteredEntry.id}
+                    name={filteredEntry.name}
+                    type={filteredEntry.type}
+                    updatedAt={filteredEntry.updatedAt}
                     onClick={() => {
-                        navigate(`/vault/entry/${entry.id}`)
+                        navigate(`/vault/entry/${filteredEntry.id}`)
                     }}
                 />
             ))}

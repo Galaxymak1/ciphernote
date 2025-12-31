@@ -44,10 +44,8 @@ export const VaultSetup = () => {
 
                 <PassphraseGenerator onChange={setPassphrase} />
 
-                {/* Confirmation + Copy */}
                 <div className="flex items-center justify-between mt-2">
 
-                    {/* Checkbox */}
                     <label className="flex items-center gap-2 cursor-pointer select-none">
                         <input
                             type="checkbox"
