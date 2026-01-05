@@ -82,6 +82,7 @@ export const EntryDetails = () => {
                     name={entry.name}
                     type={entry.type}
                     updatedAt={entry.updatedAt}
+                    expiresAt={entry.expiresAt}
                     value={value}
                     onSaveEdit={handleSaveEdit}
                 />

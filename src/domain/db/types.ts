@@ -10,6 +10,7 @@ export type EntryRecord = {
     ciphertext: ArrayBuffer
     iv: Uint8Array
     updatedAt: number
+    expiresAt?: number
     type: string
     name: string
 }

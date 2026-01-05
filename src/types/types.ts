@@ -2,6 +2,7 @@ export interface PlainEntry  {
     type?: string
     value: string
     name?: string
+    expiresAt?: number
 }
 
 export type EntryMeta = {

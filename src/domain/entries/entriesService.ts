@@ -38,7 +38,8 @@ export class EntriesService {
             iv: encrypted.iv,
             updatedAt: Date.now(),
             type: data.type,
-            name: data.name
+            name: data.name,
+            ...(data.expiresAt !== undefined && { expiresAt: data.expiresAt })
         }
 
         await saveEntry(entry)

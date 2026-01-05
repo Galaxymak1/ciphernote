@@ -7,6 +7,7 @@ interface EntryCardDetailProps {
     type: string;
     updatedAt: number;
     value: string;
+    expiresAt?: number;
     onSaveEdit: (name : string,value :string) => void;
 }
 
@@ -14,6 +15,7 @@ export const EntryDetailCard = ({
                                     name,
                                     type,
                                     updatedAt,
+                                    expiresAt,
                                     value,
                                     onSaveEdit,
                                 }: EntryCardDetailProps) => {
@@ -157,6 +159,12 @@ export const EntryDetailCard = ({
             <div className="text-xs text-neutral-content">
                 Last updated · {new Date(updatedAt).toLocaleString()}
             </div>
+            {
+                expiresAt !== undefined &&
+                <div className={"text-xs text-neutral-content"}>
+                    Expires At · {new Date(expiresAt).toLocaleString()}
+                </div>
+            }
 
             <div className="flex gap-3 justify-end pt-2">
                 {isEditing ? (
