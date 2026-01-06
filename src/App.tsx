@@ -2,6 +2,7 @@ import {useVaultStore} from "./store/vaultStore.ts";
 import {getVault} from "./domain/db/vault.store.ts";
 import {useEffect} from "react";
 import {Outlet} from "react-router";
+import {Navbar} from "./components/organisms/Navbar.tsx";
 
 export const App = () => {
     const { setStatus } = useVaultStore()
@@ -14,5 +15,12 @@ export const App = () => {
         init()
     }, [])
 
-    return <Outlet />
+    return (
+        <div>
+        {/*<Navbar />*/}
+            <Outlet />
+    </div>
+
+    )
+
 }

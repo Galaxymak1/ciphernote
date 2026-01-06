@@ -1,4 +1,11 @@
-import {CheckIcon, ClipboardDocumentIcon, XMarkIcon,PencilSquareIcon, DocumentCheckIcon,XCircleIcon} from "@heroicons/react/16/solid";
+import {
+    CheckIcon,
+    ClipboardDocumentIcon,
+    XMarkIcon,
+    DocumentCheckIcon,
+    XCircleIcon,
+    PencilSquareIcon,TrashIcon
+} from "@heroicons/react/16/solid";
 import {useNavigate} from "react-router";
 import {useMemo, useState} from "react";
 
@@ -9,6 +16,7 @@ interface EntryCardDetailProps {
     value: string;
     expiresAt?: number;
     onSaveEdit: (name : string,value :string) => void;
+    onConfirmDelete : () => void;
 }
 
 export const EntryDetailCard = ({
@@ -18,12 +26,15 @@ export const EntryDetailCard = ({
                                     expiresAt,
                                     value,
                                     onSaveEdit,
+                                    onConfirmDelete
                                 }: EntryCardDetailProps) => {
     const navigate = useNavigate();
     const [copied, setCopied] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState(name);
     const [draftValue, setDraftValue] = useState(value);
+
+
 
     const startEdit = () => {
         setDraftName(name);
@@ -57,20 +68,24 @@ export const EntryDetailCard = ({
                 return "badge-info";
         }
     }, [type]);
+    // @ts-ignore
     return (
         <div
             className={`
-        bg-base-100 flex flex-col p-6 rounded-2xl gap-5 max-w-md w-full
+        bg-base-100
+        flex flex-col gap-6
+        p-6 rounded-2xl max-w-md w-full
         border border-base-content/10
-        shadow-sm
+        shadow-md
+        transition
         ${isEditing ? "ring-2 ring-primary/40" : ""}
     `}
         >
 
-            <h2 className="text-xl font-semibold text-primary flex items-center justify-between">
-                Vault entry details
+            <h2 className="text-lg font-semibold text-base-content flex items-center justify-between">
+                Vault entry
                 <XMarkIcon
-                    className="w-7 text-neutral-content hover:text-error transition cursor-pointer"
+                    className="w-6 text-neutral-content hover:text-error transition cursor-pointer"
                     onClick={() => navigate("/vault")}
                 />
             </h2>
@@ -78,9 +93,11 @@ export const EntryDetailCard = ({
 
             <div className="flex flex-col gap-1.5">
                 <div className="inline-flex justify-between items-center">
-                    <label className="text-xs uppercase tracking-wide text-neutral-content">
+
+                    <label className="text-[11px] uppercase tracking-wide text-neutral-content">
                         Entry name
                     </label>
+
                     <div className={`badge badge-outline ${color}`}>
                         {type.toUpperCase()}
                     </div>
@@ -96,7 +113,7 @@ export const EntryDetailCard = ({
             "
                     />
                 ) : (
-                    <p className="text-base font-medium text-base-content">
+                    <p className="text-base font-semibold text-base-content">
                         {name}
                     </p>
                 )}
@@ -121,12 +138,20 @@ export const EntryDetailCard = ({
                         rows={4}
                     />
                 ) : (
-                    <div className="
-            bg-base-200/40 border border-base-content/10 rounded-lg p-3
-            font-mono text-sm text-base-content break-all
-        ">
+                    <div
+                        className="
+        bg-base-200/60
+        border border-base-content/10
+        rounded-lg
+        p-4
+        font-mono text-sm
+        text-base-content
+        break-all
+    "
+                    >
                         {value}
                     </div>
+
                 )}
 
                 {!isEditing && (
@@ -155,61 +180,76 @@ export const EntryDetailCard = ({
                 )}
             </div>
 
+            <div className="flex justify-between items-center text-xs text-neutral-content">
+                <span>
+                    Updated · {new Date(updatedAt).toLocaleString()}
+                </span>
 
-            <div className="text-xs text-neutral-content">
-                Last updated · {new Date(updatedAt).toLocaleString()}
+                            {expiresAt && (
+                                <span>
+                        Expires ·{" "}
+                                    <span className="font-medium text-error">
+                            {new Date(expiresAt).toLocaleDateString("en-GB")}
+                        </span>
+                    </span>
+                            )}
             </div>
-            {
-                expiresAt !== undefined &&
-                <div className={"text-xs text-neutral-content"}>
-                    Expires At · {new Date(expiresAt).toLocaleString()}
-                </div>
-            }
+
+
+
 
             <div className="flex gap-3 justify-end pt-2">
                 {isEditing ? (
                     <>
-                        <button
-                            onClick={saveEdit}
-                            className="
-                    inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                    bg-primary text-primary-content
-                    hover:bg-primary/90 transition shadow-sm cursor-pointer
-                "
-                        >
+                        <button onClick={saveEdit} className={"btn btn-primary"}>
                             <DocumentCheckIcon className="w-5" />
                             Save
                         </button>
-                        <button
-                            onClick={cancelEdit}
-                            className="
-                    inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                    border border-base-content/20
-                    text-base-content hover:bg-base-200 transition cursor-pointer
-                "
-                        >
+                        <button onClick={cancelEdit} className={"btn btn-neutral"}>
                             <XCircleIcon className="w-5" />
                             Cancel
                         </button>
-
-
                     </>
                 ) : (
-                    <button
-                        onClick={startEdit}
-                        className="
-                inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                bg-base-200 text-base-content
-                hover:bg-base-300 transition cursor-pointer
-            "
-                    >
-                        <PencilSquareIcon className="w-5" />
-                        Edit
-                    </button>
+                    <>
+                        <button className={"btn btn-neutral"} onClick={startEdit}>
+                            <PencilSquareIcon className="w-5" />
+                            Edit
+                        </button>
+
+                    </>
+
+
                 )}
+                <button className={"btn btn-error"} onClick={()=>document.getElementById('my_modal_1')!.showModal()}>
+                    <TrashIcon className="w-5" />
+                    Delete
+                </button>
             </div>
+            <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-semibold text-lg">
+                        Delete entry?
+                    </h3>
+                    <p className="py-3 text-sm text-neutral-content">
+                        This action is permanent and cannot be undone.
+                    </p>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <button className="btn btn-ghost btn-sm">Cancel</button>
+                        </form>
+                        <button
+                            className="btn btn-error btn-sm"
+                            onClick={onConfirmDelete}
+                        >
+                            Confirm delete
+                        </button>
+                    </div>
+                </div>
+            </dialog>
 
 
         </div>
+
     );
 };

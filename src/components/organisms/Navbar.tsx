@@ -41,7 +41,7 @@ export const Navbar = () => {
                         {isUnlocked ? "Unlocked" : "Locked"}
                     </div>
 
-                    {isUnlocked && (
+                    {isUnlocked ? (
                         <button
                             onClick={() => {
                                 setStatus("locked")
@@ -52,7 +52,9 @@ export const Navbar = () => {
                         >
                             <LockOpenIcon className="w-5" />
                         </button>
-                    )}
+                    ): <LockClosedIcon className="h-5 m-2" />
+
+                    }
                 </div>
             </nav>
         </header>

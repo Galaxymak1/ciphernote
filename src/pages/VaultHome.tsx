@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import {EntriesService} from "../domain/entries/entriesService.ts";
 import {EntryCard} from "../components/molecules/EntryCard.tsx";
 import type {VaultEntryMeta} from "../domain/db/types.ts";
@@ -11,12 +11,28 @@ export const VaultHome = () => {
     const entryService = new EntriesService()
     const navigate = useNavigate()
     const [params] = useSearchParams();
-    const type = params.get("type");
 
-    const filteredEntries = useMemo(
-        () => type ? entries.filter(e => e.type === type) : entries,
-        [entries, type]
-    );
+    const type = params.get("type");
+    const expiring = params.get("expiring");
+
+    const filteredEntries = entries.filter(entry => {
+        console.log(expiring)
+        console.log(type)
+        if (type && entry.type !== type) return false;
+
+        if (expiring === "soon") {
+            if (!entry.expiresAt) return false;
+
+            const now = Date.now();
+            const in7Days = now + 7 * 24 * 60 * 60 * 1000;
+            console.log(in7Days)
+            console.log(entry.expiresAt)
+            return entry.expiresAt <= in7Days;
+        }
+
+        return true;
+    });
+
 
     useEffect(() => {
         async function load() {
@@ -41,7 +57,7 @@ export const VaultHome = () => {
     }
 
     return (
-        <div className="p-6 grid gap-3 max-w-3xl">
+        <div className="p-6 flex flex-wrap gap-3 max-w-3xl">
             {filteredEntries.map((filteredEntry) => (
                 <EntryCard
                     key={filteredEntry.id}

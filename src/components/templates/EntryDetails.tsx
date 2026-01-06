@@ -54,6 +54,17 @@ export const EntryDetails = () => {
         loadEntryDetails();
     }, [id, entryService, navigate]);
 
+    const handleDelete = async () => {
+        try {
+            await entryService.deleteEntry(id!)
+
+            toast.success("Entry deleted");
+            navigate("/vault");
+        }catch (err) {
+            toast.error("Failed to update entry");
+        }
+
+    }
     const handleSaveEdit = async (name: string,value:string) => {
         try {
             await entryService.updateEntry(id!, {
@@ -85,8 +96,8 @@ export const EntryDetails = () => {
                     expiresAt={entry.expiresAt}
                     value={value}
                     onSaveEdit={handleSaveEdit}
+                    onConfirmDelete={handleDelete}
                 />
-
             </div>
 
         </div>

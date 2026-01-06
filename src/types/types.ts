@@ -5,12 +5,6 @@ export interface PlainEntry  {
     expiresAt?: number
 }
 
-export type EntryMeta = {
-    id: string
-    name: string
-    type: string
-    updatedAt: number
-}
 
 export type VaultStatus =
     | "loading"

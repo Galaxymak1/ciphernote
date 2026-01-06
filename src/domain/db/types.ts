@@ -26,4 +26,5 @@ export interface VaultEntryMeta {
     name: string
     type: string
     updatedAt: number
+    expiresAt?: number
 }

@@ -8,8 +8,8 @@ import {
 import {encryptBytes} from "../crypto/encrypt.ts";
 
 import {decryptBytes} from "../crypto/decrypt.ts";
-import type {EntryMeta, PlainEntry} from "../../types/types.ts";
-import type {EntryRecord} from "../db/types.ts";
+import type { PlainEntry} from "../../types/types.ts";
+import type {EntryRecord, VaultEntryMeta} from "../db/types.ts";
 import {serializeString} from "./serialize.ts";
 import {deserializeString} from "./deserialize.ts";
 
@@ -82,14 +82,15 @@ export class EntriesService {
 
 
 
-    async listEntries(): Promise<EntryMeta[]> {
+    async listEntries(): Promise<VaultEntryMeta[]> {
         const records = await getAllEntries()
 
         return records.map(r => ({
             id: r.id,
             name: r.name,
             type: r.type,
-            updatedAt: r.updatedAt
+            updatedAt: r.updatedAt,
+            expiresAt: r.expiresAt,
         }))
     }
 
