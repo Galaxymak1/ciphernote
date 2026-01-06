@@ -33,6 +33,7 @@ export const EntryDetailCard = ({
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState(name);
     const [draftValue, setDraftValue] = useState(value);
+    const dialogElement = document.getElementById('delete_modal') as HTMLDialogElement;
 
 
 
@@ -221,12 +222,12 @@ export const EntryDetailCard = ({
 
 
                 )}
-                <button className={"btn btn-error"} onClick={()=>document.getElementById('my_modal_1')!.showModal()}>
+                <button className={"btn btn-error"} onClick={()=>dialogElement.showModal()}>
                     <TrashIcon className="w-5" />
                     Delete
                 </button>
             </div>
-            <dialog id="my_modal_1" className="modal">
+            <dialog id="delete_modal" className="modal">
                 <div className="modal-box">
                     <h3 className="font-semibold text-lg">
                         Delete entry?
