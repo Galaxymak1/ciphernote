@@ -13,7 +13,9 @@ interface VaultState {
 
 export const useVaultStore = create<VaultState>()(
     persist(
-        (set) => ({
+        (
+            set
+        ) => ({
             status: "loading",
             masterKey: null,
 
