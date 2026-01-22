@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+    import {useEffect, useState} from "react"
 import {EntriesService} from "../domain/entries/entriesService.ts";
 import {EntryCard} from "../components/molecules/EntryCard.tsx";
 import type {VaultEntryMeta} from "../domain/db/types.ts";
@@ -49,7 +49,7 @@ export const VaultHome = () => {
 
     if (entries.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center h-full opacity-60">
+            <div className="flex flex-col items-center justify-center h-full opacity-60 text-xl">
                 <p>No entries yet</p>
                 <p className="text-sm">Create your first secret</p>
             </div>
