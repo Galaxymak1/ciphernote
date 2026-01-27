@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
 import {useAuthStore} from "../../store/authStore.ts";
+import {login} from "../../services/apiService.ts";
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -17,10 +18,9 @@ export const Login = () => {
         if (!email || !password) return
         setLoading(true)
 
-        // TODO: replace with real API call
-        const fakeToken = "jwt-token"
+        const response = await login(email, password)
 
-        setAccessToken(fakeToken)
+        setAccessToken(response.accessToken)
         navigate(next, { replace: true })
     }
 
