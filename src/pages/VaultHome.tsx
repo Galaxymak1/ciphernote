@@ -16,8 +16,6 @@ export const VaultHome = () => {
     const expiring = params.get("expiring");
 
     const filteredEntries = entries.filter(entry => {
-        console.log(expiring)
-        console.log(type)
         if (type && entry.type !== type) return false;
 
         if (expiring === "soon") {

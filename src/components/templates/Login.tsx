@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useNavigate, useSearchParams } from "react-router"
 import {useAuthStore} from "../../store/authStore.ts";
 import {login} from "../../services/apiService.ts";
+import {useNavigate, useSearchParams} from "react-router";
 
-export const Login = () => {
+export const Login =  () => {
     const navigate = useNavigate()
     const [params] = useSearchParams()
     const next = params.get("next") ?? "/vault"
@@ -46,7 +46,7 @@ export const Login = () => {
 
             <button
                 className="btn btn-primary w-full"
-                onClick={handleSubmit}
+                onClick={() => handleSubmit()}
                 disabled={loading}
             >
                 {loading ? "Signing in..." : "Login"}

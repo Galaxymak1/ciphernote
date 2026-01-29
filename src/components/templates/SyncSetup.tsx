@@ -11,7 +11,7 @@ export const SyncSetup = () => {
 
     async function handleActivate() {
         await saveSync({
-            id: crypto.randomUUID(),
+            id: "default",
             lastSyncedAt: Date.now(),
         })
 

@@ -11,13 +11,16 @@ import { NavLink, useSearchParams, useNavigate } from "react-router"
 import { useVaultStore } from "../../store/vaultStore"
 import { useSyncStore } from "../../store/syncStore"
 import { toast } from "react-toastify"
+import {EntriesService} from "../../domain/entries/entriesService.ts";
+import {pull, push} from "../../services/syncService.ts";
+import {getSync} from "../../domain/db/sync.store.ts";
 
 export const Sidebar = () => {
     const { setStatus, clearMasterKey } = useVaultStore()
     const { enabled, setEnabled, syncing, setSyncing } = useSyncStore()
     const [params] = useSearchParams()
     const navigate = useNavigate()
-
+    const entries = new EntriesService()
     const type = params.get("type")
     const expiring = params.get("expiring")
 
@@ -47,6 +50,11 @@ export const Sidebar = () => {
         try {
             setSyncing(true)
             toast("Syncing...", { type: "info", autoClose: 1000 })
+            const localBlobs = await entries.listAllEntries()
+            await push(localBlobs)
+            const last_sync = await getSync()
+            const data = pull(last_sync?.lastSyncedAt!!)
+            console.log(data)
             // Here you would call your SyncClient.push() / pull() combo
             // await SyncClient.sync()
             toast("Sync complete", { type: "success" })
