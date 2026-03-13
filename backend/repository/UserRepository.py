@@ -2,7 +2,7 @@ from typing import List, Any
 
 from sqlalchemy.orm import Session
 
-from model.User import User
+from models.User import User
 from security.PasswordUtils import hash_password
 
 
@@ -24,3 +24,7 @@ class UserRepository:
                ):
         hashed_password = hash_password(password)
         self.db.add(User(email=email,password=hashed_password))
+
+    def get_by_id(self,id : str) -> User | None:
+        user = self.db.query(User).filter(User.id == id).first()
+        return user

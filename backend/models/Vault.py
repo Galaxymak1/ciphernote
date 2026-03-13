@@ -1,7 +1,7 @@
 from sqlalchemy import String, Integer, ForeignKey, BINARY
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from model.Base import Base
+from models.Base import Base
 
 
 class Vault(Base):

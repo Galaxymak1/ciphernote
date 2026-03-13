@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.orm import Session
 
-from model.Blob import Blob
+from models.Blob import Blob
 
 
 class BlobRepository:

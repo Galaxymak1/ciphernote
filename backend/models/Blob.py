@@ -2,7 +2,7 @@
 from sqlalchemy import String, Integer, BINARY, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from model.Base import Base
+from models.Base import Base
 
 
 class Blob(Base):
