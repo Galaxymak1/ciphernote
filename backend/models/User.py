@@ -1,5 +1,6 @@
 import uuid
 
+import ulid
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
 
@@ -10,7 +11,7 @@ from models.Base import Base
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[str] = mapped_column(String, primary_key=True,default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String, primary_key=True)
     username: Mapped[str] = mapped_column(String)
     email: Mapped[str] = mapped_column(String, unique=True)
     password: Mapped[str] = mapped_column(String)

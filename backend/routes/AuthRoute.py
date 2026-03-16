@@ -18,4 +18,5 @@ async def login(request : LoginDto,db = Depends(get_db)) -> Token:
     return token
 
 @auth_router.post("/register")
-async def register(request: RegisterRequest,db = Depends(get_db)):
+async def register(request: RegisterRequest,db = Depends(get_db)) -> Token:
+     return AuthService().register(db,request)

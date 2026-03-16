@@ -1,5 +1,4 @@
-from typing import List, Any
-
+import ulid
 from sqlalchemy.orm import Session
 
 from models.User import User
@@ -19,11 +18,16 @@ class UserRepository:
         return user
 
     def create(self,
+               username: str,
                email: str,
                password: str,
                ):
+        print(password)
         hashed_password = hash_password(password)
-        self.db.add(User(email=email,password=hashed_password))
+        user = User(id=str(ulid.new()),email=email,password=hashed_password,username=username)
+        self.db.add(user)
+        self.db.flush()
+        return user
 
     def get_by_id(self,id : str) -> User | None:
         user = self.db.query(User).filter(User.id == id).first()

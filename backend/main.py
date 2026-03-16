@@ -1,12 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.params import Depends
-from sqlalchemy.orm import Session
-
-from config.db import get_db
-from repository.UserRepository import UserRepository
+from routes.AuthRoute import auth_router
+from routes.UserRoute import user_router
 
 app = FastAPI()
-
+app.include_router(user_router)
+app.include_router(auth_router)
 
 @app.get("/")
 async def root():
@@ -18,12 +16,3 @@ async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
 
-@app.get("/users")
-async def get_users(db: Session = Depends(get_db)):
-    try:
-        users = UserRepository(db).list_users()
-        return users
-    except Exception as e:
-        import traceback
-        print(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e))
