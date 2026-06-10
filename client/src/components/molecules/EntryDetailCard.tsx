@@ -7,7 +7,7 @@ import {
     PencilSquareIcon,TrashIcon
 } from "@heroicons/react/16/solid";
 import {useNavigate} from "react-router";
-import {useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 
 interface EntryCardDetailProps {
     name: string;
@@ -33,7 +33,7 @@ export const EntryDetailCard = ({
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState(name);
     const [draftValue, setDraftValue] = useState(value);
-    const dialogElement = document.getElementById('delete_modal') as HTMLDialogElement;
+    const deleteModalRef = useRef<HTMLDialogElement>(null);
 
 
 
@@ -221,12 +221,12 @@ export const EntryDetailCard = ({
 
 
                 )}
-                <button className={"btn btn-error"} onClick={()=>dialogElement.showModal()}>
+                <button className={"btn btn-error"} onClick={() => deleteModalRef.current?.showModal()}>
                     <TrashIcon className="w-5" />
                     Delete
                 </button>
             </div>
-            <dialog id="delete_modal" className="modal">
+            <dialog ref={deleteModalRef} className="modal">
                 <div className="modal-box">
                     <h3 className="font-semibold text-lg">
                         Delete entry?
@@ -240,7 +240,10 @@ export const EntryDetailCard = ({
                         </form>
                         <button
                             className="btn btn-error btn-sm"
-                            onClick={onConfirmDelete}
+                            onClick={() => {
+                                deleteModalRef.current?.close()
+                                onConfirmDelete()
+                            }}
                         >
                             Confirm delete
                         </button>
