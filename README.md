@@ -1,11 +1,14 @@
 # Ciphernote
 
+[![CI](https://github.com/Galaxymak1/ciphernote/actions/workflows/ci.yml/badge.svg)](https://github.com/Galaxymak1/ciphernote/actions/workflows/ci.yml)
+
 > A **local-first, zero-knowledge** vault for API keys, secrets, and notes. Everything is encrypted in your browser with the Web Crypto API — plaintext never touches disk and there is no server to trust.
 
 Ciphernote is a single-page React app backed entirely by IndexedDB. You unlock it with a passphrase that is never stored anywhere; that passphrase derives the key that unwraps your data. Lose the passphrase and the data is unrecoverable — which is the point.
 
-<!-- TODO: add a screenshot or short GIF of the vault here -->
-<!-- ![Ciphernote vault](docs/screenshot.png) -->
+**🔗 [Live demo](https://ciphernote-foqr.vercel.app/)**
+
+![Ciphernote vault](docs/screenshot.png)
 
 ---
 
