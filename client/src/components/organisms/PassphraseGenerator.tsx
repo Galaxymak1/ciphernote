@@ -20,6 +20,8 @@ export const PassphraseGenerator = ({ onChange }: Props) => {
     }
 
     useEffect(() => {
+        // Kick off the animated passphrase reveal once on mount.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         regenerate()
     }, [])
 

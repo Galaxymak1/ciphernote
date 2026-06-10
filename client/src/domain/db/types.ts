@@ -15,12 +15,6 @@ export type EntryRecord = {
     name: string
 }
 
-export type SyncRecord = {
-    id: string
-    lastSyncedAt: number
-}
-
-
 export interface VaultEntryMeta {
     id: string
     name: string

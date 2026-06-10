@@ -69,7 +69,6 @@ export const EntryDetailCard = ({
                 return "badge-info";
         }
     }, [type]);
-    // @ts-ignore
     return (
         <div
             className={`

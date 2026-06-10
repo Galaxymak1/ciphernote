@@ -41,7 +41,7 @@ export const EntryDetails = () => {
 
             setEntry(entry);
             setValue(decryptedValue);
-        } catch (err) {
+        } catch {
             toast.error("Failed to load entry");
             navigate("/vault");
         } finally {
@@ -60,8 +60,8 @@ export const EntryDetails = () => {
 
             toast.success("Entry deleted");
             navigate("/vault");
-        }catch (err) {
-            toast.error("Failed to update entry");
+        }catch {
+            toast.error("Failed to delete entry");
         }
 
     }
@@ -73,7 +73,7 @@ export const EntryDetails = () => {
             })
             toast.success("Entry updated");
             await loadEntryDetails()
-        }catch (err) {
+        }catch {
             toast.error("Failed to update entry");
         }
 

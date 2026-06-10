@@ -94,14 +94,6 @@ export class EntriesService {
         }))
     }
 
-    async listAllEntries(): Promise<EntryRecord[]> {
-        const records = await getAllEntries()
-
-        return records
-    }
-
-
-
     async getDecryptedValue(id: string): Promise<string> {
         const record = await getEntryRecord(id)
         if (!record) {

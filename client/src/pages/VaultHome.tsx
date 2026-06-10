@@ -1,4 +1,4 @@
-    import {useEffect, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import {EntriesService} from "../domain/entries/entriesService.ts";
 import {EntryCard} from "../components/molecules/EntryCard.tsx";
 import type {VaultEntryMeta} from "../domain/db/types.ts";
@@ -8,7 +8,8 @@ import {useNavigate, useSearchParams} from "react-router";
 export const VaultHome = () => {
     const [entries, setEntries] = useState<VaultEntryMeta[]>([])
     const [loading, setLoading] = useState(true)
-    const entryService = new EntriesService()
+    const [now] = useState(() => Date.now())
+    const entryService = useMemo(() => new EntriesService(), [])
     const navigate = useNavigate()
     const [params] = useSearchParams();
 
@@ -21,10 +22,7 @@ export const VaultHome = () => {
         if (expiring === "soon") {
             if (!entry.expiresAt) return false;
 
-            const now = Date.now();
             const in7Days = now + 7 * 24 * 60 * 60 * 1000;
-            console.log(in7Days)
-            console.log(entry.expiresAt)
             return entry.expiresAt <= in7Days;
         }
 
@@ -39,7 +37,7 @@ export const VaultHome = () => {
             setLoading(false)
         }
         load()
-    }, [])
+    }, [entryService])
 
     if (loading) {
         return <div className="p-6">Loading entries…</div>

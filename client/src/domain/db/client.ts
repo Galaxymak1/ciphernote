@@ -1,6 +1,6 @@
 // domain/db/client.ts
 import {DB_NAME, DB_VERSION, STORES} from "./schema"
-import type { VaultRecord, EntryRecord, SyncRecord } from "./types"
+import type { VaultRecord, EntryRecord } from "./types"
 import {type DBSchema, openDB} from "idb";
 
 interface SecureNotesDB extends DBSchema {
@@ -12,10 +12,6 @@ interface SecureNotesDB extends DBSchema {
         key: string
         value: EntryRecord
         indexes: { "by-updatedAt": number }
-    }
-    sync: {
-        key: string
-        value: SyncRecord
     }
 }
 
@@ -33,10 +29,6 @@ export const db = await openDB<SecureNotesDB>(
                     keyPath: "id"
                 })
                 store.createIndex("by-updatedAt", "updatedAt")
-            }
-
-            if (!db.objectStoreNames.contains(STORES.SYNC)) {
-                db.createObjectStore(STORES.SYNC)
             }
         }
     }

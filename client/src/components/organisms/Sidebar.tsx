@@ -4,23 +4,13 @@ import {
     ClockIcon,
     PlusIcon,
     LockClosedIcon,
-    LinkIcon,
-    ArrowPathIcon,
 } from "@heroicons/react/16/solid"
-import { NavLink, useSearchParams, useNavigate } from "react-router"
+import { NavLink, useSearchParams } from "react-router"
 import { useVaultStore } from "../../store/vaultStore"
-import { useSyncStore } from "../../store/syncStore"
-import { toast } from "react-toastify"
-import {EntriesService} from "../../domain/entries/entriesService.ts";
-import {pull, push} from "../../services/syncService.ts";
-import {getSync} from "../../domain/db/sync.store.ts";
 
 export const Sidebar = () => {
     const { setStatus, clearMasterKey } = useVaultStore()
-    const { enabled, setEnabled, syncing, setSyncing } = useSyncStore()
     const [params] = useSearchParams()
-    const navigate = useNavigate()
-    const entries = new EntriesService()
     const type = params.get("type")
     const expiring = params.get("expiring")
 
@@ -30,40 +20,6 @@ export const Sidebar = () => {
                 ? "active bg-base-300"
                 : ""
         }`
-
-    async function handleToggleSync() {
-        if (!enabled) {
-            // user wants to enable sync → probably go to /vault/sync or /login
-            navigate("/vault/sync")
-        } else {
-            // disable sync
-            setEnabled(false)
-            toast("Sync disabled", {
-                type: "info",
-                theme: "dark",
-            })
-        }
-    }
-
-    async function handleManualSync() {
-        if (!enabled || syncing) return
-        try {
-            setSyncing(true)
-            toast("Syncing...", { type: "info", autoClose: 1000 })
-            const localBlobs = await entries.listAllEntries()
-            await push(localBlobs)
-            const last_sync = await getSync()
-            const data = pull(last_sync?.lastSyncedAt!!)
-            console.log(data)
-            // Here you would call your SyncClient.push() / pull() combo
-            // await SyncClient.sync()
-            toast("Sync complete", { type: "success" })
-        } catch (err) {
-            toast("Sync failed", { type: "error" })
-        } finally {
-            setSyncing(false)
-        }
-    }
 
     return (
         <aside className="bg-base-200 w-80 min-h-full p-4 flex flex-col">
@@ -127,33 +83,6 @@ export const Sidebar = () => {
                     <PlusIcon className="w-4" />
                     New entry
                 </NavLink>
-
-                <div className="flex gap-2">
-                    <button
-                        className={`btn btn-sm flex-1 ${
-                            enabled ? "btn-success" : "btn-outline"
-                        }`}
-                        onClick={handleToggleSync}
-                    >
-                        <LinkIcon className="w-4" />
-                        {enabled ? "Sync enabled" : "Enable sync"}
-                    </button>
-
-                    {enabled && (
-                        <button
-                            className="btn btn-sm btn-ghost"
-                            onClick={handleManualSync}
-                            disabled={syncing}
-                            title="Manual sync"
-                        >
-                            <ArrowPathIcon
-                                className={`w-4 ${
-                                    syncing ? "animate-spin" : ""
-                                }`}
-                            />
-                        </button>
-                    )}
-                </div>
 
                 <button
                     className="btn btn-outline btn-sm w-full"

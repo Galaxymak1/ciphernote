@@ -1,30 +1,15 @@
-# Ciphernote
+# Ciphernote — client
 
-A **local-first, encrypted vault application** for securely storing sensitive information such as API keys, secrets, and notes.  
-All data is encrypted client-side and never leaves the device unencrypted.
+This is the React + Vite frontend (and the entire application — Ciphernote is local-first with no backend).
 
----
+See the [root README](../README.md) for the project overview, security model, and full documentation.
 
-## Features
+## Quick start
 
-- 🔐 Client-side encryption using a master key
-- 📁 Store multiple entry types (APIs, secrets, notes)
-- 🔎 Filter entries by type
-- ✏️ View and edit existing entries
-- ⏳ Track entry update timestamps
-- 🚫 No backend dependency (local-first)
-- 🧠 Clean, modular architecture
-
----
-
-## Tech Stack
-
-- **Frontend**: React + TypeScript
-- **Routing**: React Router
-- **State Management**: Zustand
-- **Styling**: Tailwind CSS + DaisyUI
-- **Notifications**: react-toastify
-- **Icons**: Heroicons
-- **Build Tool**: Vite / Bun
-
----
+```bash
+bun install     # or npm install
+bun run dev      # start the dev server
+bun run test     # run the crypto test suite
+bun run build    # type-check + production build
+bun run lint
+```
