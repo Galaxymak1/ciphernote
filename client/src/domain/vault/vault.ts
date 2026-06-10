@@ -3,6 +3,7 @@ import {deriveKEK, generateMasterKey} from "../crypto/kdf.ts";
 import {generateSalt} from "../crypto/random.ts";
 import {wrapMasterKey} from "../crypto/encrypt.ts";
 import {unwrapMasterKey} from "../crypto/decrypt.ts";
+import {wipeAllData} from "../db/reset.ts";
 import { useVaultStore} from "../../store/vaultStore.ts";
 
 const KDF_ITERATIONS = 310_000
@@ -62,5 +63,17 @@ export class Vault {
 
     lock() {
         useVaultStore.getState().clearMasterKey()
+    }
+
+    /**
+     * Destroys the vault and every entry, returning the app to its initial
+     * "no vault" state. Used as the recovery path when the passphrase is lost.
+     * This is irreversible — the encrypted data cannot be recovered afterwards.
+     */
+    async reset() {
+        await wipeAllData()
+        const store = useVaultStore.getState()
+        store.clearMasterKey()
+        store.setStatus("no-vault")
     }
 }
