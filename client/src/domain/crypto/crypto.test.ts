@@ -8,7 +8,7 @@ import { generateSalt } from "./random"
 const enc = (s: string) => new TextEncoder().encode(s)
 const dec = (b: ArrayBuffer) => new TextDecoder().decode(b)
 
-const KDF_ITERATIONS = 10_000 // lower than production for fast tests
+const KDF_ITERATIONS = 10_000
 
 describe("encryptBytes / decryptBytes", () => {
     it("round-trips plaintext through AES-GCM", async () => {
