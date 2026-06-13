@@ -26,13 +26,16 @@ export const PassphraseGenerator = ({ onChange }: Props) => {
     }, [])
 
     return (
-
-            <div className="flex flex-row items-center gap-2">
-                <PassphraseField passphrase={passphrase} />
-                <ArrowPathIcon
-                    className="h-6 cursor-pointer text-primary"
-                    onClick={regenerate}
-                />
-            </div>
+        <div className="flex flex-row items-center gap-2">
+            <PassphraseField passphrase={passphrase} />
+            <button
+                type="button"
+                aria-label="Generate a new passphrase"
+                onClick={regenerate}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-base-content/15 bg-base-200/60 text-primary transition hover:border-primary/50 hover:bg-base-200 active:rotate-180 active:duration-300 cursor-pointer"
+            >
+                <ArrowPathIcon className="h-5" />
+            </button>
+        </div>
     )
 }

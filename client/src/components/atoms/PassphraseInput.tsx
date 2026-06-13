@@ -10,7 +10,7 @@ export const PassphraseInput = ({ value, onChange }: Props) => {
     const [shown, setShown] = useState(false)
 
     return (
-        <div className="inline-flex items-center border border-neutral gap-2 rounded-lg p-2">
+        <div className="flex w-full items-center gap-2 rounded-xl border border-base-content/15 bg-base-200/60 px-3 py-2.5 transition focus-within:border-primary/60 focus-within:bg-base-200">
             <input
                 id="passphrase"
                 value={value}
@@ -19,20 +19,18 @@ export const PassphraseInput = ({ value, onChange }: Props) => {
                 maxLength={40}
                 autoComplete="off"
                 spellCheck={false}
-                className="border-0 rounded-lg outline-offset-3 min-w-xs outline-primary"
+                placeholder="your-secret-passphrase"
+                className="w-full border-0 bg-transparent font-mono text-sm outline-none placeholder:text-neutral-content/50"
             />
 
-            {shown ? (
-                <EyeIcon
-                    onClick={() => setShown(false)}
-                    className="w-6 cursor-pointer"
-                />
-            ) : (
-                <EyeSlashIcon
-                    onClick={() => setShown(true)}
-                    className="w-6 cursor-pointer"
-                />
-            )}
+            <button
+                type="button"
+                aria-label={shown ? "Hide passphrase" : "Show passphrase"}
+                onClick={() => setShown((v) => !v)}
+                className="shrink-0 text-neutral-content transition hover:text-primary cursor-pointer"
+            >
+                {shown ? <EyeIcon className="w-5" /> : <EyeSlashIcon className="w-5" />}
+            </button>
         </div>
     )
 }

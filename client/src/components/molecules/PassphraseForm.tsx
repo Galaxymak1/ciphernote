@@ -1,5 +1,5 @@
 import { PassphraseInput } from "../atoms/PassphraseInput"
-import { useState } from "react"
+import { useState, type KeyboardEvent } from "react"
 import { AppButton } from "../atoms/AppButton"
 
 interface Props {
@@ -16,9 +16,18 @@ export const PassphraseForm = ({ onSubmit, loading, error }: Props) => {
         onSubmit(passphrase)
     }
 
+    function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+        if (e.key === "Enter") handleSubmit()
+    }
+
     return (
-        <div className="bg-base-100 flex flex-col p-6 rounded-lg gap-4 max-w-md w-full items-center">
-            <h3 className="text-neutral-content">Enter your passphrase</h3>
+        <div
+            className="surface flex flex-col p-6 rounded-2xl gap-4 w-full shadow-xl shadow-black/20"
+            onKeyDown={handleKeyDown}
+        >
+            <label className="text-xs uppercase tracking-wide text-neutral-content" htmlFor="passphrase">
+                Passphrase
+            </label>
 
             <PassphraseInput
                 value={passphrase}
@@ -34,7 +43,7 @@ export const PassphraseForm = ({ onSubmit, loading, error }: Props) => {
                 disabled={!passphrase || loading}
                 className="btn btn-primary w-full"
             >
-                {loading ? "Unlocking..." : "Enter"}
+                {loading ? "Unlocking…" : "Unlock vault"}
             </AppButton>
         </div>
     )

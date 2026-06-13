@@ -7,7 +7,8 @@ import {
     PencilSquareIcon,TrashIcon
 } from "@heroicons/react/16/solid";
 import {useNavigate} from "react-router";
-import {useMemo, useRef, useState} from "react";
+import {useRef, useState} from "react";
+import {entryTypeMeta} from "../../utils/entryType";
 
 interface EntryCardDetailProps {
     name: string;
@@ -59,49 +60,46 @@ export const EntryDetailCard = ({
 
         setTimeout(() => setCopied(false), 1500)
     }
-    const color = useMemo(() => {
-        switch (type) {
-            case "note":
-                return "badge-primary";
-            case "api":
-                return "badge-accent";
-            case "secret":
-                return "badge-info";
-        }
-    }, [type]);
+    const meta = entryTypeMeta(type);
+    const { Icon } = meta;
     return (
         <div
             className={`
-        bg-base-100
+        surface
         flex flex-col gap-6
         p-6 rounded-2xl max-w-md w-full
-        border border-base-content/10
-        shadow-md
+        shadow-xl shadow-black/20
         transition
+        animate-rise
         ${isEditing ? "ring-2 ring-primary/40" : ""}
     `}
         >
 
-            <h2 className="text-lg font-semibold text-base-content flex items-center justify-between">
-                Vault entry
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <span className={`grid h-10 w-10 place-items-center rounded-xl ${meta.chip} ${meta.icon}`}>
+                        <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                        <p className="text-[11px] uppercase tracking-wide text-neutral-content">
+                            Vault entry
+                        </p>
+                        <span className={`badge badge-outline badge-sm ${meta.badge}`}>
+                            {meta.label}
+                        </span>
+                    </div>
+                </div>
                 <XMarkIcon
                     className="w-6 text-neutral-content hover:text-error transition cursor-pointer"
                     onClick={() => navigate("/vault")}
                 />
-            </h2>
+            </div>
 
 
             <div className="flex flex-col gap-1.5">
-                <div className="inline-flex justify-between items-center">
-
-                    <label className="text-[11px] uppercase tracking-wide text-neutral-content">
-                        Entry name
-                    </label>
-
-                    <div className={`badge badge-outline ${color}`}>
-                        {type.toUpperCase()}
-                    </div>
-                </div>
+                <label className="text-[11px] uppercase tracking-wide text-neutral-content">
+                    Entry name
+                </label>
 
                 {isEditing ? (
                     <input

@@ -79,7 +79,21 @@ export const EntryDetails = () => {
 
     }
     if (loading) {
-        return <div className="pt-10 text-center">Loading...</div>;
+        return (
+            <div className="flex justify-center pt-10">
+                <div className="surface w-full max-w-md rounded-2xl p-6 space-y-5">
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 animate-pulse rounded-xl bg-base-content/10" />
+                        <div className="space-y-2">
+                            <div className="h-3 w-20 animate-pulse rounded bg-base-content/10" />
+                            <div className="h-4 w-16 animate-pulse rounded bg-base-content/10" />
+                        </div>
+                    </div>
+                    <div className="h-4 w-40 animate-pulse rounded bg-base-content/10" />
+                    <div className="h-24 w-full animate-pulse rounded-lg bg-base-content/5" />
+                </div>
+            </div>
+        );
     }
 
     if (!entry) {
@@ -87,7 +101,7 @@ export const EntryDetails = () => {
     }
 
     return (
-        <div>
+        <div className="px-2">
             <div className="flex justify-center pt-10">
                 <EntryDetailCard
                     name={entry.name}

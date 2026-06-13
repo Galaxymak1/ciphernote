@@ -1,5 +1,6 @@
-import { ExclamationTriangleIcon, NoSymbolIcon } from "@heroicons/react/16/solid"
+import { ExclamationTriangleIcon } from "@heroicons/react/16/solid"
 import { PassphraseForm } from "../components/molecules/PassphraseForm"
+import { Brand } from "../components/atoms/Brand"
 import { Vault } from "../domain/vault/vault"
 import { useVaultStore } from "../store/vaultStore"
 import { useState } from "react"
@@ -58,23 +59,31 @@ export const Unlock = () => {
     }
 
     return (
-        <div className="md:pt-40 flex flex-col items-center px-20 h-screen gap-4">
-            <div className="inline-flex gap-2 items-center">
-                <h1 className="text-3xl lg:text-4xl font-bold text-primary">
-                    Your vault is locked
-                </h1>
-                <NoSymbolIcon className="w-12 text-primary" />
-            </div>
+        <div className="bg-vault min-h-screen flex flex-col items-center justify-center gap-6 px-4 py-12">
+            <header className="flex flex-col items-center gap-4 text-center animate-rise">
+                <Brand size="lg" />
+                <div className="space-y-1">
+                    <h1 className="text-3xl lg:text-4xl font-bold">
+                        Welcome back
+                    </h1>
+                    <p className="text-sm text-neutral-content">
+                        Your vault is locked. Enter your passphrase to decrypt it.
+                    </p>
+                </div>
+            </header>
 
-            <PassphraseForm
-                onSubmit={handleUnlock}
-                loading={loading}
-                error={error}
-            />
+            <div className="w-full max-w-md animate-rise" style={{ animationDelay: "90ms" }}>
+                <PassphraseForm
+                    onSubmit={handleUnlock}
+                    loading={loading}
+                    error={error}
+                />
+            </div>
 
             <button
                 type="button"
-                className="btn btn-link btn-sm text-neutral-content no-underline"
+                className="btn btn-link btn-sm text-neutral-content no-underline animate-fade"
+                style={{ animationDelay: "160ms" }}
                 onClick={() => setShowReset(true)}
             >
                 Forgot your passphrase?

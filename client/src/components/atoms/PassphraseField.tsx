@@ -5,12 +5,22 @@ import {EyeIcon,EyeSlashIcon} from "@heroicons/react/16/solid";
 export const PassphraseField = (({passphrase} : {passphrase:string}) => {
     const [shown, setShown] = useState<boolean>(true);
     return (
-        <div className="inline-flex items-center border border-neutral gap-2 rounded-lg p-2">
-            <input id="passphrase" value={passphrase} className={"resize-none border-0 outline-0 min-w-xs"}  readOnly={true} type={shown ? "text" : "password"}></input>
-            {
-                shown ? <EyeIcon onClick={() => setShown(false)}  className={"w-6"}/>
-                : <EyeSlashIcon  onClick={() => setShown(true)} className={"w-6"}/>
-            }
+        <div className="flex w-full items-center gap-2 rounded-xl border border-base-content/15 bg-base-200/60 px-3 py-2.5">
+            <input
+                id="passphrase"
+                value={passphrase}
+                className="w-full border-0 bg-transparent font-mono text-sm outline-none"
+                readOnly={true}
+                type={shown ? "text" : "password"}
+            />
+            <button
+                type="button"
+                aria-label={shown ? "Hide passphrase" : "Show passphrase"}
+                onClick={() => setShown((v) => !v)}
+                className="shrink-0 text-neutral-content transition hover:text-primary cursor-pointer"
+            >
+                {shown ? <EyeIcon className="w-5" /> : <EyeSlashIcon className="w-5" />}
+            </button>
         </div>
     )
 })
